@@ -143,13 +143,13 @@ fn find_config_file() -> Option<PathBuf> {
     let locations = vec![config_path, exe_path];
 
     for location in &locations {
-        let config_file = location.join("credentials.ini");
+        let config_file = location.join("../config.ini");
         if config_file.exists() {
             return Some(config_file);
         }
     }
     eprintln!(
-        "Could not find credentials.ini in {:?}",
+        "Could not find config.ini in {:?}",
         locations
             .iter()
             .map(|loc| loc.to_str().to_owned().unwrap())
@@ -162,8 +162,8 @@ pub fn load_config() -> Env {
     let mut config = Ini::new();
     let config_file = find_config_file();
 
-    let path = config_file.expect("Could not find credentials.ini");
-    config.load(path).expect("Failed to load credentials.ini");
+    let path = config_file.expect("Could not find config.ini");
+    config.load(path).expect("Failed to load config.ini");
 
     Env {
         discord_client_id: "826189107046121572".to_string(),
@@ -191,11 +191,11 @@ fn set_oauth_tokens(json_response: &TraktAccessToken) {
     let mut config = Ini::new_cs();
     let config_file = find_config_file();
 
-    let path = config_file.expect("Could not find credentials.ini");
+    let path = config_file.expect("Could not find config.ini");
 
     config
         .load(path.clone())
-        .expect("Failed to load credentials.ini");
+        .expect("Failed to load config.ini");
     config.setstr(
         "Trakt API",
         "OAuthAccessToken",
@@ -211,7 +211,7 @@ fn set_oauth_tokens(json_response: &TraktAccessToken) {
         "OAuthRefreshTokenExpiresAt",
         Some(json_response.created_at.to_string()),
     );
-    config.write(path).expect("Failed to write credentials.ini");
+    config.write(path).expect("Failed to write config.ini");
 }
 
 pub fn log(message: &str) {

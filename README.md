@@ -26,20 +26,21 @@ Plex Rich Presence alternatives:
 
 ## Setup
 
-1. Create an API Application on [Trakt.tv](https://trakt.tv/oauth/applications/new) (with scrobble capabilities and `urn:ietf:wg:oauth:2.0:oob` as the redirect uri) 
-2. Edit the `credentials.ini` file with the required Trakt username.
-3. Run the respective executable, and you're ready to start sharing your progress!
+1. Create an API Application on [Trakt.tv](https://trakt.tv/oauth/applications/new) (with scrobble capabilities and `urn:ietf:wg:oauth:2.0:oob` as the redirect uri)
+2. Edit the `config.ini` file with the required Trakt username.
+3. Fill in the `client_id` and `client_secret` fields with the values from the API Application you created in step 1.
+4. Run the respective executable, and you're ready to start sharing your progress!
 
 *P.S.* Discord needs to be running on the machine Discrakt is running on.
-*P.P.S.* Place the `credentials.ini` file in the same directory as the executable.
+*P.P.S.* Place the `config.ini` file in the same directory as the executable.
 
-*P.P.P.S.* If you want to store the configuration in a common location, the `credentials.ini` can also be stored in:
+*P.P.P.S.* If you want to store the configuration in a common location, the `config.ini` can also be stored in:
 
-|Operating System|Location|Example|
-|--------|-----|-------|
-|Linux|`$XDG_CONFIG_HOME`/discrakt or `$HOME`/.config/discrakt|/home/alice/.config/discrakt/credentials.ini|
-|macOS|`$HOME`/Library/Application Support/discrakt|/Users/Alice/Library/Application Support/discrakt/credentials.ini|
-|Windows|`%APPDATA%`\discrakt|C:\Users\Alice\AppData\Roaming\discrakt\credentials.ini|
+|Operating System|Location| Example                                                      |
+|--------|-----|--------------------------------------------------------------|
+|Linux|`$XDG_CONFIG_HOME`/discrakt or `$HOME`/.config/discrakt| /home/alice/.config/discrakt/config.ini                      |
+|macOS|`$HOME`/Library/Application Support/discrakt| /Users/Alice/Library/Application Support/discrakt/config.ini |
+|Windows|`%APPDATA%`\discrakt| C:\Users\Alice\AppData\Roaming\discrakt\config.ini           |
 
 ## Running executables
 
