@@ -11,6 +11,8 @@ use crate::{
 
 pub struct Discord {
     client: DiscordIpcClient,
+    enable_large_image: bool,
+    enable_small_image: bool,
 }
 
 #[derive(Default)]
@@ -25,7 +27,7 @@ pub struct Payload {
 }
 
 impl Discord {
-    pub fn new(discord_client_id: String) -> Discord {
+    pub fn new(discord_client_id: String, enable_large_image: bool, enable_small_image: bool) -> Discord {
         Discord {
             client: match DiscordIpcClient::new(&discord_client_id) {
                 Ok(client) => client,
@@ -34,6 +36,8 @@ impl Discord {
                     panic!("Couldn't connect to Discord");
                 }
             },
+            enable_large_image,
+            enable_small_image,
         }
     }
 
@@ -121,17 +125,11 @@ impl Discord {
         };
 
         let watch_time = get_watch_stats(trakt_response);
-
-        let payload = Activity::new()
+        
+        let mut payload = Activity::new()
             .details(&payload_data.details)
             .state(&payload_data.state)
             .activity_type(ActivityType::Watching)
-            .assets(
-                Assets::new()
-                    .large_image(&img)
-                    .small_image("trakt")
-                    .small_text("Discrakt"),
-            )
             .timestamps(
                 Timestamps::new()
                     .start(watch_time.start_date.timestamp())
@@ -141,6 +139,21 @@ impl Discord {
                 Button::new("IMDB", &payload_data.link_imdb),
                 Button::new("Trakt", &payload_data.link_trakt),
             ]);
+
+        if self.enable_large_image || self.enable_small_image {
+            let mut img_assets = Assets::new();
+
+            if self.enable_large_image {
+                img_assets = img_assets.large_image(&img);
+            }
+            if self.enable_small_image {
+                img_assets = img_assets
+                    .small_image("trakt")
+                    .small_text("Discrakt");
+            }
+            
+            payload = payload.assets(img_assets);
+        }
 
         log(&format!(
             "{} - {} | {}",

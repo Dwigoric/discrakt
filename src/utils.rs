@@ -26,6 +26,8 @@ pub struct Env {
     pub trakt_refresh_token: Option<String>,
     pub trakt_refresh_token_expires_at: Option<u64>,
     pub tmdb_token: String,
+    pub enable_large_image: bool,
+    pub enable_small_image: bool,
 }
 
 pub struct WatchStats {
@@ -184,6 +186,14 @@ pub fn load_config() -> Env {
             .getuint("Trakt API", "OAuthRefreshTokenExpiresAt")
             .unwrap_or_default(),
         tmdb_token: "21b815a75fec5f1e707e3da1b9b2d7e3".to_string(),
+        enable_large_image: config
+            .getbool("Discord", "enableLargeImage")
+            .expect("enableLargeImage not found")
+            .unwrap_or(true),
+        enable_small_image: config
+            .getbool("Discord", "enableSmallImage")
+            .expect("enableSmallImage not found")
+            .unwrap_or(true),
     }
 }
 
