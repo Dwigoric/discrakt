@@ -135,7 +135,7 @@ impl Discord {
         };
 
         let watch_time = get_watch_stats(trakt_response);
-        
+
         let mut payload = Activity::new()
             .details(&payload_data.details)
             .state(&payload_data.state)
@@ -153,24 +153,22 @@ impl Discord {
                 img_assets = img_assets.large_image(&img);
             }
             if self.enable_small_image {
-                img_assets = img_assets
-                    .small_image("trakt")
-                    .small_text("Discrakt");
+                img_assets = img_assets.small_image("trakt").small_text("Discrakt");
             }
-            
+
             payload = payload.assets(img_assets);
         }
-        
+
         if self.show_imdb_button || self.show_trakt_button {
             let mut buttons = Vec::new();
-            
+
             if self.show_imdb_button {
                 buttons.push(Button::new("IMDB", &payload_data.link_imdb));
             }
             if self.show_trakt_button {
                 buttons.push(Button::new("Trakt", &payload_data.link_trakt));
             }
-            
+
             payload = payload.buttons(buttons);
         }
 
