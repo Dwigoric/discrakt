@@ -147,7 +147,7 @@ fn find_config_file() -> Option<PathBuf> {
     let locations = vec![config_path, exe_path];
 
     for location in &locations {
-        let config_file = location.join("../config.ini");
+        let config_file = location.join("./config.ini");
         if config_file.exists() {
             return Some(config_file);
         }
