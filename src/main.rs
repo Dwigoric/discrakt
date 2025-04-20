@@ -11,7 +11,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut discord = Discord::new(
         cfg.discord_client_id,
         cfg.enable_large_image,
-        cfg.enable_small_image
+        cfg.enable_small_image,
+        cfg.show_imdb_button,
+        cfg.show_trakt_button,
     );
     let mut trakt = Trakt::new(
         cfg.trakt_client_id,

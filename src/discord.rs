@@ -13,6 +13,8 @@ pub struct Discord {
     client: DiscordIpcClient,
     enable_large_image: bool,
     enable_small_image: bool,
+    show_imdb_button: bool,
+    show_trakt_button: bool,
 }
 
 #[derive(Default)]
@@ -27,7 +29,13 @@ pub struct Payload {
 }
 
 impl Discord {
-    pub fn new(discord_client_id: String, enable_large_image: bool, enable_small_image: bool) -> Discord {
+    pub fn new(
+        discord_client_id: String,
+        enable_large_image: bool,
+        enable_small_image: bool,
+        show_imdb_button: bool,
+        show_trakt_button: bool,
+    ) -> Discord {
         Discord {
             client: match DiscordIpcClient::new(&discord_client_id) {
                 Ok(client) => client,
@@ -38,6 +46,8 @@ impl Discord {
             },
             enable_large_image,
             enable_small_image,
+            show_imdb_button,
+            show_trakt_button,
         }
     }
 
@@ -134,11 +144,7 @@ impl Discord {
                 Timestamps::new()
                     .start(watch_time.start_date.timestamp())
                     .end(watch_time.end_date.timestamp()),
-            )
-            .buttons(vec![
-                Button::new("IMDB", &payload_data.link_imdb),
-                Button::new("Trakt", &payload_data.link_trakt),
-            ]);
+            );
 
         if self.enable_large_image || self.enable_small_image {
             let mut img_assets = Assets::new();
@@ -153,6 +159,19 @@ impl Discord {
             }
             
             payload = payload.assets(img_assets);
+        }
+        
+        if self.show_imdb_button || self.show_trakt_button {
+            let mut buttons = Vec::new();
+            
+            if self.show_imdb_button {
+                buttons.push(Button::new("IMDB", &payload_data.link_imdb));
+            }
+            if self.show_trakt_button {
+                buttons.push(Button::new("Trakt", &payload_data.link_trakt));
+            }
+            
+            payload = payload.buttons(buttons);
         }
 
         log(&format!(

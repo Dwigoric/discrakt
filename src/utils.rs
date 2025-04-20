@@ -28,6 +28,8 @@ pub struct Env {
     pub tmdb_token: String,
     pub enable_large_image: bool,
     pub enable_small_image: bool,
+    pub show_imdb_button: bool,
+    pub show_trakt_button: bool,
 }
 
 pub struct WatchStats {
@@ -193,6 +195,14 @@ pub fn load_config() -> Env {
         enable_small_image: config
             .getbool("Discord", "enableSmallImage")
             .expect("enableSmallImage not found")
+            .unwrap_or(true),
+        show_imdb_button: config
+            .getbool("Discord", "showImdbButton")
+            .expect("showIMDBButton not found")
+            .unwrap_or(true),
+        show_trakt_button: config
+            .getbool("Discord", "showTraktButton")
+            .expect("showTraktButton not found")
             .unwrap_or(true),
     }
 }
